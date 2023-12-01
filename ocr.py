@@ -24,10 +24,10 @@ n_epochs = 20
 
 
 def plotImgs(X):
-    # plot the first 20 images of X
+    # plot the first 30 images of X
     fig = plt.figure(figsize=(16, 6))
-    for i in range(15):
-        ax = fig.add_subplot(3, 5, i + 1, xticks=[], yticks=[])
+    for i in range(30):
+        ax = fig.add_subplot(3, 10, i + 1, xticks=[], yticks=[])
         ax.imshow(X[i].reshape((image_height, image_width)), cmap='gray')
     plt.show()
     return
@@ -44,7 +44,7 @@ def prepareData(file_path):
     y = data[:, 0]
     x = data[:, 1:] / 255.
     x = x.reshape((x.shape[0], image_height, image_width, 1))
-    print(f"x: {x.shape}, y:{y.shape}")
+    # print(f"x.shape: {x.shape}, y.shape:{y.shape}")
     
     return x, y
 
@@ -117,18 +117,28 @@ def train_model(train_images, train_labels):
 
 if __name__ == '__main__':
 
-    # Read and pre-format training data
-    train_images, train_labels = prepareData(train_letters_path)
+    # # Read and pre-format training data
+    # train_images, train_labels = prepareData(train_letters_path)
 
-    # Train Model
-    model = train_model(train_images, train_labels)
-    print(model)
+    # # Train Model
+    # model = train_model(train_images, train_labels)
+    # print(model)
+
 
     # Load saved model
-    # saved_model = keras.models.load_model(model_path)
+    saved_model = keras.models.load_model(model_path)
 
-    # saved_model.summary()
+    # Read and pre-format testing data
+    test_images, test_labels = prepareData(test_letters_path)
+    test_labels = keras.utils.to_categorical(test_labels, num_classes)
+    # test_images = tf.random.shuffle(test_images).numpy()
 
-
+    # Compute loss and accuracy against test data
+    metrics = saved_model.evaluate(
+        test_images, test_labels, 
+        batch_size=batch_size, verbose=0, return_dict=True
+    )
+    print(f"Test loss: {metrics['loss']:.3f}")
+    print(f"Test accuracy: {metrics['accuracy']:.3f}")
 
 

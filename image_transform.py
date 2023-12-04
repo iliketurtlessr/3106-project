@@ -24,15 +24,15 @@ greyed_img = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2GRAY)
 
 # Apply theshold
 _, threshed_img = cv2.threshold(greyed_img.copy(), 60, 255, cv2.THRESH_BINARY_INV)
-# cv2.imshow('thresh', thresh)
+# cv2.imshow('threshed_img', threshed_img)
 
 # Dilate image to take consider letters like 'i', and 'j' as one single letter
-rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 6))
-dilated_img = cv2.dilate(threshed_img, rect_kernel, iterations=1)
-# cv2.imshow('dilation', dilated_img)
+rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 8))
+morphed_img = cv2.dilate(threshed_img, rect_kernel, iterations=1)
+# cv2.imshow('morphed_img', morphed_img)
 
 # Find contours on the dilated image
-contours, _ = cv2.findContours(dilated_img.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+contours, _ = cv2.findContours(morphed_img.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 recognized_letters = []
 
 for c in contours:

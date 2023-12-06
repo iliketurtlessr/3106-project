@@ -18,4 +18,7 @@ ___
 #### `./predict.py`
 - Loads model from disk and predicts letters from the csv file created by running the file [above](#image_transformpy)
 
+#### `./readAndPredict.py png_image_file_path`
+- reads in all the files from png_image_file_path which are png, converts those images to array and predicts letters from that.
+
 
